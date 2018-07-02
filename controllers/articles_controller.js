@@ -33,6 +33,16 @@ class Article {
         })
     }
 
+    static showOne(req,res) {
+        ArticleModel.find({title:req.headers.title})
+        .then(dataArticle=>{
+            res.status(200).json({dataArticle})
+        })
+        .catch(err=>{
+            res.status(500).json({message:err.message})
+        })
+    }
+
     static delete(req,res) {
         const decoded = jwt.verify(req.headers.token,"helloworld123")
         ArticleModel.findById({_id:req.params.id})
@@ -61,13 +71,14 @@ class Article {
     }
 
     static update(req,res) {
-        ArticleModel.findById({_id:req.params.id})
+        console.log(req.headers.token,"xxxxxxxxxxx");
+        ArticleModel.find({title:req.params.title})
         .then(dataArticle=>{
-            console.log(dataArticle,"====")
             if(dataArticle) {
                 const decoded = jwt.verify(req.headers.token,"helloworld123")
-                if(dataArticle.userId == decoded.userId) {
-                    ArticleModel.updateOne({_id:req.params.id},{$set:req.body})
+                // console.log(dataArticle)
+                if(dataArticle[0].userId == decoded.userId) {
+                    ArticleModel.updateOne({title:req.params.title},{$set:req.body})
                     .then(result=>{
                         res.status(200).json({message:"article updated",result})
                     })
