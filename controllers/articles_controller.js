@@ -10,7 +10,7 @@ class Article {
             content: req.body.content
         }
 
-        const decoded = jwt.verify(req.headers.token,"helloworld123")    
+        const decoded = jwt.verify(req.headers.token,process.env.JWT_SALT)    
         dataArticle.userId = decoded.userId
         
 
@@ -44,7 +44,7 @@ class Article {
     }
 
     static delete(req,res) {
-        const decoded = jwt.verify(req.headers.token,"helloworld123")
+        const decoded = jwt.verify(req.headers.token,process.env.JWT_SALT)
         ArticleModel.findById({_id:req.params.id})
         .then(dataArticle=>{
             if(dataArticle) {
@@ -75,7 +75,7 @@ class Article {
         ArticleModel.find({title:req.params.title})
         .then(dataArticle=>{
             if(dataArticle) {
-                const decoded = jwt.verify(req.headers.token,"helloworld123")
+                const decoded = jwt.verify(req.headers.token,process.env.JWT_SALT)
                 // console.log(dataArticle)
                 if(dataArticle[0].userId == decoded.userId) {
                     ArticleModel.updateOne({title:req.params.title},{$set:req.body})

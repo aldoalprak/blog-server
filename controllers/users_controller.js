@@ -26,7 +26,7 @@ class User {
             if(dataUser !== null) {
                 const compare = bcrypt.compareSync(req.body.password,dataUser.password);
                 if(compare) {
-                    const token = jwt.sign({userId:dataUser._id},"helloworld123")
+                    const token = jwt.sign({userId:dataUser._id},process.env.JWT_SALT)
                     res.status(200).json({message:"signin succeed",token,dataUser})    
                 }else{
                     res.status(500).json({message:"invalid email/password"})    

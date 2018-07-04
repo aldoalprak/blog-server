@@ -3,6 +3,7 @@ var express = require('express');
 var cors = require('cors')
 var path = require('path');
 var logger = require('morgan');
+require('dotenv').config()
 const mongoose = require('mongoose')
 mongoose.connect('mongodb://alprak:rotitawarmanis12@ds129560.mlab.com:29560/blog_alprak',function(err){
   if(err) {
